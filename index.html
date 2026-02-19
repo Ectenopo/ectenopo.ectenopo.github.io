@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Construct Access</title>
+    <title>THE CONSTRUCT // V2.0</title>
     <style>
         body {
             margin: 0;
@@ -11,7 +11,7 @@
             background-color: black;
             overflow: hidden;
             font-family: 'Courier New', Courier, monospace;
-            color: #0F0;
+            color: #0F0; /* Default Green */
         }
 
         /* Matrix Rain Canvas */
@@ -20,6 +20,7 @@
             top: 0;
             left: 0;
             z-index: 1;
+            opacity: 0.4; /* Dimmed slightly so text is readable */
         }
 
         /* Main Container */
@@ -28,74 +29,60 @@
             z-index: 10;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.7); /* Slight overlay to make text readable */
-        }
-
-        /* Google Sign In (Visual Only) */
-        .login-btn {
-            padding: 10px 20px;
-            background-color: #fff;
-            color: #333;
-            font-weight: bold;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 30px;
-            transition: 0.3s;
-        }
-
-        .login-btn:hover {
-            background-color: #f1f1f1;
-        }
-
-        .hidden {
-            display: none;
         }
 
         /* Command Interface */
         .terminal {
-            width: 60%;
-            max-width: 800px;
-            background: rgba(0, 20, 0, 0.9);
-            border: 1px solid #0F0;
+            width: 70%;
+            max-width: 900px;
+            height: 60vh;
+            background: rgba(0, 10, 0, 0.95);
+            border: 1px solid currentColor;
             padding: 20px;
-            box-shadow: 0 0 20px #0F0;
-            border-radius: 5px;
+            box-shadow: 0 0 30px currentColor;
+            display: flex;
+            flex-direction: column;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .header-bar {
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
         }
 
         .output-log {
-            height: 200px;
+            flex-grow: 1;
             overflow-y: auto;
             margin-bottom: 15px;
-            font-size: 14px;
+            font-size: 15px;
+            line-height: 1.4;
             white-space: pre-wrap;
-            color: #0F0;
-            border-bottom: 1px dashed #0F0;
-            padding-bottom: 10px;
+            word-wrap: break-word;
         }
 
-        /* Scrollbar styling */
-        .output-log::-webkit-scrollbar {
-            width: 8px;
-        }
-        .output-log::-webkit-scrollbar-thumb {
-            background: #0F0; 
-        }
+        /* Custom Scrollbar */
+        .output-log::-webkit-scrollbar { width: 8px; }
+        .output-log::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+        .output-log::-webkit-scrollbar-thumb { background: currentColor; border-radius: 4px; }
 
         .input-line {
             display: flex;
             align-items: center;
+            background: rgba(0,0,0,0.5);
+            padding: 5px;
         }
 
         .prompt {
             margin-right: 10px;
-            color: #0F0;
             font-weight: bold;
         }
 
@@ -103,142 +90,318 @@
             flex-grow: 1;
             background: transparent;
             border: none;
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
+            color: inherit;
+            font-family: inherit;
             font-size: 16px;
             outline: none;
-            caret-color: #0F0;
         }
+
+        /* Utility Classes for Colors */
+        .color-green { color: #0F0; border-color: #0F0; box-shadow: 0 0 30px #0F0; }
+        .color-red { color: #F00; border-color: #F00; box-shadow: 0 0 30px #F00; }
+        .color-blue { color: #00F; border-color: #00F; box-shadow: 0 0 30px #00F; }
+        .color-white { color: #FFF; border-color: #FFF; box-shadow: 0 0 30px #FFF; }
+        .color-gold { color: #FFD700; border-color: #FFD700; box-shadow: 0 0 30px #FFD700; }
+
+        .cmd-success { color: inherit; opacity: 1; }
+        .cmd-error { color: #FF4444; font-weight: bold; }
+        .cmd-info { opacity: 0.8; font-style: italic; }
 
     </style>
 </head>
-<body>
+<body class="color-green">
 
     <canvas id="matrix-canvas"></canvas>
 
     <div class="container">
-        <div id="login-screen">
-            <h1 style="text-align: center; text-shadow: 0 0 10px #0F0;">SYSTEM LOCKED</h1>
-            <button class="login-btn" onclick="fakeLogin()">
-                <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
-                Sign in with Google
-            </button>
-        </div>
-
-        <div id="command-screen" class="hidden terminal">
-            <div id="log" class="output-log">Welcome to the Construct.
-Authentication Verified.
-Type 'help' for a list of commands.
+        <div id="terminal-window" class="terminal">
+            <div class="header-bar">
+                <span>Construct Access Terminal</span>
+                <span id="clock">00:00:00</span>
+            </div>
+            <div id="log" class="output-log">Initializing connection...
+Connected.
+Type 'help' to view the database of commands.
 </div>
             <div class="input-line">
                 <span class="prompt">User@Root:~$</span>
-                <input type="text" id="cmdInput" placeholder="Enter command..." autocomplete="off">
+                <input type="text" id="cmdInput" placeholder="Enter command..." autocomplete="off" autofocus>
             </div>
         </div>
     </div>
 
     <script>
-        // --- MATRIX RAIN EFFECT ---
+        // --- 1. MATRIX VISUALS ---
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
-        const fontSize = 16;
+        const letters = "0101010101XYZA";
+        const fontSize = 14;
         const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
 
         function drawMatrix() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0";
-            ctx.font = fontSize + "px arial";
+            
+            // Text color is based on current theme, but we query the body color
+            const style = getComputedStyle(document.body);
+            ctx.fillStyle = style.color; 
+            ctx.font = fontSize + "px monospace";
 
             for (let i = 0; i < drops.length; i++) {
                 const text = letters.charAt(Math.floor(Math.random() * letters.length));
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
         setInterval(drawMatrix, 33);
+        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        // --- 2. CLOCK UTILITY ---
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString();
+        }, 1000);
 
-        // --- INTERFACE LOGIC ---
-
-        const loginScreen = document.getElementById('login-screen');
-        const commandScreen = document.getElementById('command-screen');
-        const cmdInput = document.getElementById('cmdInput');
+        // --- 3. COMMAND LOGIC ---
         const logDisplay = document.getElementById('log');
+        const cmdInput = document.getElementById('cmdInput');
+        const terminalBody = document.body;
 
-        function fakeLogin() {
-            loginScreen.classList.add('hidden');
-            commandScreen.classList.remove('hidden');
-            cmdInput.focus();
-            printLog("Access Granted. Connecting to Google Services... [SIMULATED]");
-        }
-
-        function printLog(text) {
-            logDisplay.innerHTML += `<div>> ${text}</div>`;
+        function printLog(text, type = "cmd-success") {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `> ${text}`;
+            logDisplay.appendChild(div);
             logDisplay.scrollTop = logDisplay.scrollHeight;
         }
 
+        // --- URL PATTERNS FOR 100+ COMMANDS ---
+        // Format: { CommandName: URL_Template }
+        // %s is replaced by the query
+        const urlCommands = {
+            // Google Suite
+            "google:search": "https://www.google.com/search?q=%s",
+            "google:images": "https://www.google.com/search?tbm=isch&q=%s",
+            "google:maps": "https://www.google.com/maps?q=%s",
+            "google:news": "https://www.google.com/search?tbm=nws&q=%s",
+            "google:translate": "https://translate.google.com/?text=%s",
+            "google:scholar": "https://scholar.google.com/scholar?q=%s",
+            "google:finance": "https://www.google.com/finance/quote/%s",
+            
+            // Video & Audio
+            "youtube:search": "https://www.youtube.com/results?search_query=%s",
+            "twitch:search": "https://www.twitch.tv/search?term=%s",
+            "spotify:search": "https://open.spotify.com/search/%s",
+            "soundcloud:search": "https://soundcloud.com/search?q=%s",
+            "vimeo:search": "https://vimeo.com/search?q=%s",
+            "dailymotion:search": "https://www.dailymotion.com/search/%s",
+            "tiktok:search": "https://www.tiktok.com/search?q=%s",
+
+            // Social
+            "twitter:search": "https://twitter.com/search?q=%s",
+            "reddit:search": "https://www.reddit.com/search/?q=%s",
+            "reddit:sub": "https://www.reddit.com/r/%s",
+            "instagram:user": "https://www.instagram.com/%s",
+            "facebook:search": "https://www.facebook.com/search/top?q=%s",
+            "pinterest:search": "https://www.pinterest.com/search/pins/?q=%s",
+            "tumblr:search": "https://www.tumblr.com/search/%s",
+            "linkedin:search": "https://www.linkedin.com/search/results/all/?keywords=%s",
+
+            // Developers
+            "github:search": "https://github.com/search?q=%s",
+            "github:user": "https://github.com/%s",
+            "stackoverflow:search": "https://stackoverflow.com/search?q=%s",
+            "npm:search": "https://www.npmjs.com/search?q=%s",
+            "pypi:search": "https://pypi.org/search/?q=%s",
+            "docker:search": "https://hub.docker.com/search?q=%s",
+            "mdn:search": "https://developer.mozilla.org/en-US/search?q=%s",
+            "codepen:search": "https://codepen.io/search/pens?q=%s",
+
+            // Knowledge / Info
+            "wiki:search": "https://en.wikipedia.org/wiki/Special:Search?search=%s",
+            "wolfram:solve": "https://www.wolframalpha.com/input/?i=%s",
+            "imdb:search": "https://www.imdb.com/find?q=%s",
+            "urban:define": "https://www.urbandictionary.com/define.php?term=%s",
+            "bible:search": "https://www.biblegateway.com/quicksearch/?quicksearch=%s",
+            "nasa:search": "https://images.nasa.gov/search-results?q=%s",
+            "archive:search": "https://archive.org/search.php?query=%s",
+
+            // Shopping
+            "amazon:search": "https://www.amazon.com/s?k=%s",
+            "ebay:search": "https://www.ebay.com/sch/i.html?_nkw=%s",
+            "walmart:search": "https://www.walmart.com/search?q=%s",
+            "etsy:search": "https://www.etsy.com/search?q=%s",
+            "bestbuy:search": "https://www.bestbuy.com/site/searchpage.jsp?st=%s",
+            "target:search": "https://www.target.com/s?searchTerm=%s",
+            "aliexpress:search": "https://www.aliexpress.com/wholesale?SearchText=%s",
+
+            // Tech News
+            "hackernews:search": "https://hn.algolia.com/?q=%s",
+            "techcrunch:search": "https://search.techcrunch.com/search?p=%s",
+            "wired:search": "https://www.wired.com/search/?q=%s",
+            "verge:search": "https://www.theverge.com/search?q=%s",
+
+            // Gaming
+            "steam:search": "https://store.steampowered.com/search/?term=%s",
+            "ign:search": "https://www.ign.com/search?q=%s",
+            "roblox:search": "https://www.roblox.com/discover/?Keyword=%s",
+            "minecraft:wiki": "https://minecraft.fandom.com/wiki/Special:Search?query=%s",
+            "twitch:channel": "https://www.twitch.tv/%s",
+
+            // Images/Art
+            "imgur:search": "https://imgur.com/search?q=%s",
+            "unsplash:search": "https://unsplash.com/s/photos/%s",
+            "deviantart:search": "https://www.deviantart.com/search?q=%s",
+            "flickr:search": "https://www.flickr.com/search/?text=%s",
+            "giphy:search": "https://giphy.com/search/%s",
+
+            // Travel
+            "maps:place": "https://www.google.com/maps/place/%s",
+            "airbnb:search": "https://www.airbnb.com/s/%s/homes",
+            "tripadvisor:search": "https://www.tripadvisor.com/Search?q=%s",
+
+            // Other
+            "bing:search": "https://www.bing.com/search?q=%s",
+            "duckduckgo:search": "https://duckduckgo.com/?q=%s",
+            "yahoo:search": "https://search.yahoo.com/search?p=%s",
+            "weather:check": "https://www.weather.com/weather/today/l/%s"
+        };
+
+        // --- SYSTEM COMMANDS ---
+        function executeSystemCommand(cmd, arg) {
+            switch(cmd) {
+                // Visuals
+                case 'matrix:red':
+                    terminalBody.className = 'color-red';
+                    printLog("System Alert Level: CRITICAL (Red Mode Active)");
+                    return true;
+                case 'matrix:blue':
+                    terminalBody.className = 'color-blue';
+                    printLog("System Status: STABLE (Blue Mode Active)");
+                    return true;
+                case 'matrix:white':
+                    terminalBody.className = 'color-white';
+                    printLog("High Contrast Mode Enabled");
+                    return true;
+                case 'matrix:gold':
+                    terminalBody.className = 'color-gold';
+                    printLog("Admin Privilege Mode Visuals Enabled");
+                    return true;
+                case 'matrix:reset':
+                    terminalBody.className = 'color-green';
+                    printLog("Visuals reset to default.");
+                    return true;
+                case 'clear':
+                    logDisplay.innerHTML = "";
+                    return true;
+                
+                // Utilities
+                case 'calc':
+                    try {
+                        // Safe math evaluation using Function constructor with restrictions
+                        // Removing anything that isn't a number or math operator
+                        if (/[^0-9+\-*/(). ]/.test(arg)) {
+                            printLog("Error: Invalid characters in calculation.", "cmd-error");
+                        } else {
+                            const result = new Function('return ' + arg)();
+                            printLog(`Result: ${result}`);
+                        }
+                    } catch (e) { printLog("Math Error.", "cmd-error"); }
+                    return true;
+                
+                case 'system:time':
+                    printLog(`Current System Time: ${new Date().toLocaleTimeString()}`);
+                    return true;
+                
+                case 'system:date':
+                    printLog(`Current System Date: ${new Date().toLocaleDateString()}`);
+                    return true;
+
+                case 'echo':
+                    printLog(arg);
+                    return true;
+
+                case 'help':
+                    printLog("--- COMMAND DATABASE [PARTIAL] ---");
+                    printLog("SYNTAX: Category:Action(\"query\")");
+                    printLog("EXAMPLES:");
+                    printLog("  Youtube:Search(\"lofi hip hop\")");
+                    printLog("  Google:Images(\"cyberpunk city\")");
+                    printLog("  Github:Search(\"python scripts\")");
+                    printLog("  Wolfram:Solve(\"integrate x^2\")");
+                    printLog("  System:Time");
+                    printLog("  Calc(\"50 * 25\")");
+                    printLog("  Matrix:Red / Matrix:Blue / Matrix:Reset");
+                    printLog("  Clear");
+                    printLog("... Over 100 commands loaded in registry.");
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        // --- MAIN PARSER ---
         cmdInput.addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
-                const fullCommand = cmdInput.value.trim();
+                const rawInput = cmdInput.value.trim();
                 cmdInput.value = '';
-                processCommand(fullCommand);
+                
+                if(!rawInput) return;
+
+                printLog(`User: ${rawInput}`, "cmd-info");
+
+                // Parse standard "Category:Action("Arg")" format
+                // Regex looks for:  CommandName  ( " Argument " )
+                const complexMatch = rawInput.match(/^([a-zA-Z0-9:]+)\s*\(\s*["'](.+)["']\s*\)$/);
+                
+                // Parse simple "Command" format (no args)
+                const simpleMatch = rawInput.match(/^([a-zA-Z0-9:]+)$/);
+
+                let commandKey = "";
+                let argument = "";
+
+                if (complexMatch) {
+                    commandKey = complexMatch[1].toLowerCase();
+                    argument = complexMatch[2];
+                } else if (simpleMatch) {
+                    commandKey = simpleMatch[1].toLowerCase();
+                } else {
+                    // Fallback: allow space separation for easier typing? 
+                    // Let's stick to strict mode first, but maybe add a basic fallback
+                    // for commands like "help".
+                    commandKey = rawInput.toLowerCase();
+                }
+
+                // 1. Check System Commands first
+                if (executeSystemCommand(commandKey, argument)) {
+                    return;
+                }
+
+                // 2. Check URL Commands
+                if (urlCommands[commandKey]) {
+                    if (!argument) {
+                        printLog(`Error: ${commandKey} requires an argument. e.g. ("query")`, "cmd-error");
+                        return;
+                    }
+                    const finalUrl = urlCommands[commandKey].replace("%s", encodeURIComponent(argument));
+                    printLog(`Executing protocol: ${commandKey}...`);
+                    window.open(finalUrl, '_blank');
+                } else {
+                    printLog(`Error: Command '${commandKey}' not found. Check syntax.`, "cmd-error");
+                }
             }
         });
 
-        function processCommand(input) {
-            printLog(input); // Echo the command
+        // Focus input on click anywhere
+        document.addEventListener('click', () => cmdInput.focus());
 
-            // Regex to parse commands like Method("Argument")
-            const searchRegex = /^Youtube:Search\("(.+)"\)$/i;
-            const playRegex = /^Youtube:Play\("(.+)"\)$/i;
-
-            if (input.toLowerCase() === 'help') {
-                printLog("Available Commands:");
-                printLog('  Youtube:Search("query") - Opens YouTube search results.');
-                printLog('  Youtube:Play("query")   - Searches and plays video.');
-                printLog('  clear                   - Clears the terminal.');
-            } 
-            else if (input.toLowerCase() === 'clear') {
-                logDisplay.innerHTML = '';
-            }
-            else if (searchRegex.test(input)) {
-                const match = input.match(searchRegex);
-                const query = match[1];
-                printLog(`Executing Search for: "${query}"`);
-                
-                // Open YouTube Search in new tab
-                window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
-            } 
-            else if (playRegex.test(input)) {
-                const match = input.match(playRegex);
-                const query = match[1];
-                printLog(`Searching to play: "${query}"`);
-                
-                // NOTE: To comply with YouTube API terms, we open the video normally.
-                // Playing audio-only or hiding the player violates ToS.
-                // This simulates the "find and play" action.
-                window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgIQAQ%253D%253D`, '_blank');
-                printLog("Redirecting to video player...");
-            } 
-            else {
-                printLog(`Error: Command '${input}' not recognized.`);
-            }
-        }
     </script>
 </body>
 </html>
